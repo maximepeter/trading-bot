@@ -1,10 +1,6 @@
 import pandas as pd
 
 
-def test(x):
-    return x - 1
-
-
 def exponentialMovingAverage(df: pd.DataFrame, window: int) -> pd.DataFrame:
     ema = df.ewm(
         span=window, adjust=False, min_periods=window).mean()

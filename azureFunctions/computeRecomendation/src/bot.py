@@ -1,9 +1,9 @@
+from ast import List
+from typing import Dict
 import binance as bn
 import pandas as pd
 import datetime as dt
 import computeRecomendation.src.utils as utils
-from ast import List
-from typing import Dict
 from computeRecomendation.src.portfolio import Portfolio
 
 
@@ -11,7 +11,8 @@ class Bot:
     def __init__(self, portfolio: Portfolio):
         self.client: bn.Client = None
         self.symbols: List = ["BTCUSDT", "ETHUSDT",
-                              "SOLUSDT", "SANDUSDT", "FTMUSDT"]
+                              "SOLUSDT", "SANDUSDT", "FTMUSDT",
+                              "ADAUSDT"]
         self.portfolio: Portfolio = portfolio
         self.rsiBuyThreshold = 35
         self.rsiSellThreshold = 65
@@ -64,15 +65,14 @@ class Bot:
             utils.generateFinalRecomendation(rsiAndMacd)
             output = {
                 "symbol": symbol,
+                "price": rsiAndMacd.at[window, 'price'],
                 "rsi": rsiAndMacd.at[window, "rsi"],
-                "macdHistogramYesterday": rsiAndMacd.at[window, "macdHistogram"],
-                "macdHistogramToday": rsiAndMacd.at[window, "macdHistogram"],
+                "macdHistogram": rsiAndMacd.at[window, "macdHistogram"],
                 "macdRecomendation": rsiAndMacd.at[window, "macdRecomendation"],
                 "rsiRecomendation": rsiAndMacd.at[window, "rsiRecomendation"],
                 "finalRecomendation": rsiAndMacd.at[window, "endRecomendation"]
             }
             outputs.append(output)
-        print(outputs)
         return outputs
 
     # Trading methods

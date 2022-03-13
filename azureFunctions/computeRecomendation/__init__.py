@@ -1,7 +1,4 @@
-import json
 import azure.functions as func
-import computeRecomendation.src.utils as utils
-import logging
 import requests
 import datetime as dt
 from computeRecomendation.src.bot import Bot
@@ -10,10 +7,10 @@ from azure.keyvault.secrets import SecretClient
 from azure.identity import DefaultAzureCredential
 
 
-def main(mytimer: func.TimerRequest) -> None:
+def main(timer: func.TimerRequest) -> None:
     keyVaultName: str = "kv-bot-mpeter"
-    logicAppURL = "https://prod-73.westeurope.logic.azure.com:443/workflows/29e44456a25f4f8d93ba0fdee04491c2/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=2DEIah-cashNcjaD27jbQJfIB-PcEBFzUfNeCF_LUdA"
-    KVUri = f"https://{keyVaultName}.vault.azure.net"
+    logicAppURL: str = "https://prod-73.westeurope.logic.azure.com:443/workflows/29e44456a25f4f8d93ba0fdee04491c2/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=2DEIah-cashNcjaD27jbQJfIB-PcEBFzUfNeCF_LUdA"
+    KVUri: str = f"https://{keyVaultName}.vault.azure.net"
     credential = DefaultAzureCredential()
     client = SecretClient(vault_url=KVUri, credential=credential)
     apiKey, apiSecret = client.get_secret(
@@ -26,11 +23,14 @@ def main(mytimer: func.TimerRequest) -> None:
         jsonData.append(
             {
                 'symbol': reco['symbol'],
+                'price': reco['price'],
+                'rsi': round(reco['rsi'], 2),
+                'macdHistogram': round(reco['macdHistogram'], 2),
                 'recomendation': reco['finalRecomendation']
             }
         )
     payload = {
         'date': dt.datetime.now().strftime("%m/%d/%Y"),
-        'recomendations': jsonData
+        'recomendations': sorted(jsonData, key=lambda d: d['recomendation'])
     }
-    response = requests.post(logicAppURL, json=payload)
+    requests.post(logicAppURL, json=payload)
