@@ -1,3 +1,4 @@
+from telnetlib import STATUS
 import azure.functions as func
 import requests
 import datetime as dt
@@ -23,7 +24,7 @@ def main(timer: func.TimerRequest) -> None:
         jsonData.append(
             {
                 'symbol': reco['symbol'],
-                'price': reco['price'],
+                'price': round(reco['price'], 2),
                 'rsi': round(reco['rsi'], 2),
                 'macdHistogram': round(reco['macdHistogram'], 2),
                 'recomendation': reco['finalRecomendation']
