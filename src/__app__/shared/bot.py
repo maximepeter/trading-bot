@@ -3,8 +3,8 @@ from typing import Dict
 import binance as bn
 import pandas as pd
 import datetime as dt
-import computeRecomendation.src.utils as utils
-from computeRecomendation.src.portfolio import Portfolio
+from .utils import *
+from .portfolio import Portfolio
 
 
 class Bot:
@@ -55,14 +55,14 @@ class Bot:
         window = 40
         for symbol in self.symbols:
             df = self.getLastNDays(symbol, window)
-            rsiAndMacd = utils.rsi(df, 14)
-            rsiAndMacd["macd"] = utils.macd(rsiAndMacd)
-            utils.macdSignalLine(rsiAndMacd)
-            utils.macdHistogram(rsiAndMacd)
-            utils.generateRecomendationFromMacd(rsiAndMacd)
-            utils.generateRecomendationFromRsi(
+            rsiAndMacd = rsi(df, 14)
+            rsiAndMacd["macd"] = macd(rsiAndMacd)
+            macdSignalLine(rsiAndMacd)
+            macdHistogram(rsiAndMacd)
+            generateRecomendationFromMacd(rsiAndMacd)
+            generateRecomendationFromRsi(
                 rsiAndMacd, self.rsiSellThreshold, self.rsiBuyThreshold)
-            utils.generateFinalRecomendation(rsiAndMacd)
+            generateFinalRecomendation(rsiAndMacd)
             output = {
                 "symbol": symbol,
                 "price": rsiAndMacd.at[window, 'price'],

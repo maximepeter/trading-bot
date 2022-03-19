@@ -1,7 +1,7 @@
 from ast import List
 import pandas as pd
-from ..azureFunctions.computeRecomendation.src.bot import Bot
-from ..azureFunctions.computeRecomendation.src.utils import *
+from __app__.shared.bot import Bot
+from __app__.shared.utils import *
 
 
 class Strategy:

@@ -1,9 +1,8 @@
-from telnetlib import STATUS
 import azure.functions as func
 import requests
 import datetime as dt
-from computeRecomendation.src.bot import Bot
-from computeRecomendation.src.portfolio import Portfolio
+from ..shared.bot import Bot
+from ..shared.portfolio import Portfolio
 from azure.keyvault.secrets import SecretClient
 from azure.identity import DefaultAzureCredential
 
