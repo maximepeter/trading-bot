@@ -17,4 +17,4 @@ bot.connectToAPI(apiKey.value, apiSecret.value)
 bot.getTodaysRecomendation()
 
 strategy = Strategy(bot)
-strategy.runSimulation('BTCUSDT', "1 Jan 2020", "31 Dec 2021")
+strategy.runSimulation('BTCUSDT', "1 Jan 2022", "22 Apr 2022")

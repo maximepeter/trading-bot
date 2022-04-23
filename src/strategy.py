@@ -30,9 +30,9 @@ class Strategy:
         self.initialization(self.bot.getHistoricalData(
             symbol, startDate, endDate))
         evaluation = rsi(self.historicalTimeSerie, self.window)
-        evaluation["macd"] = macd(evaluation)
-        macdSignalLine(evaluation)
-        macdHistogram(evaluation)
+        macd(evaluation)
+        initialPrice = evaluation['price'].iloc[0]
+        endPrice = evaluation['price'].iloc[-1]
         generateRecomendationFromRsi(
             evaluation, self.bot.rsiSellThreshold, self.bot.rsiBuyThreshold)
         generateRecomendationFromMacd(evaluation)
@@ -49,5 +49,6 @@ class Strategy:
                 reco=priceAndReco.iloc[i, 2], price=priceAndReco.iloc[i, 0], qty=priceAndReco.iloc[i, 1], date=priceAndReco.iloc[i, 3])
         endMoney = self.bot.getWallet(
         )[0] + self.bot.getWallet()[1] * priceAndReco.iloc[-1, 0]
+        print("Do nothing performance", (endPrice - initialPrice)/initialPrice)
         print("End wallet", self.bot.getWallet())
         print('Gain : ', 100 * (endMoney - initialMoney) / initialMoney, "%")

@@ -14,7 +14,7 @@ class Bot:
                               "SOLUSDT", "SANDUSDT", "FTMUSDT",
                               "ADAUSDT"]
         self.portfolio: Portfolio = portfolio
-        self.rsiBuyThreshold = 35
+        self.rsiBuyThreshold = 45
         self.rsiSellThreshold = 65
 
     # Update of the attributes
@@ -56,9 +56,7 @@ class Bot:
         for symbol in self.symbols:
             df = self.getLastNDays(symbol, window)
             rsiAndMacd = rsi(df, 14)
-            rsiAndMacd["macd"] = macd(rsiAndMacd)
-            macdSignalLine(rsiAndMacd)
-            macdHistogram(rsiAndMacd)
+            macd(rsiAndMacd)
             generateRecomendationFromMacd(rsiAndMacd)
             generateRecomendationFromRsi(
                 rsiAndMacd, self.rsiSellThreshold, self.rsiBuyThreshold)
