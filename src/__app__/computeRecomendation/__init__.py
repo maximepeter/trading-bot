@@ -23,9 +23,9 @@ def main(timer: func.TimerRequest) -> None:
         jsonData.append(
             {
                 'symbol': reco['symbol'],
-                'price': round(reco['price'], 2),
+                'price': round(reco['price'], 3),
                 'rsi': round(reco['rsi'], 2),
-                'macdHistogram': round(reco['macdHistogram'], 2),
+                'macdHistogram': round(reco['macdHistogram'], 3),
                 'recomendation': reco['finalRecomendation']
             }
         )
